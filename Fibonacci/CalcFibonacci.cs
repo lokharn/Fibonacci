@@ -15,21 +15,26 @@ namespace Fibonacci
         //https://www.johndcook.com/blog/2008/12/10/fast-exponentiation/
         public static DoubleMatrix IntPower(DoubleMatrix x, short powNum)
         {
-            if (powNum == 0) return identityМatrix; 
-            if (powNum == 1) return x;
+            if (powNum == 0) return identityМatrix; //Возвращает 0, если возведение в нулевую степень.
+            if (powNum == 1) return x; //Возвращает исходную матрицу, если возведение в первую степень. 
             int n = 15;
-            while ((powNum <<= 1) >= 0) n--;
-            DoubleMatrix tmp = x;
+            while ((powNum <<= 1) >= 0) //Побитовый сдвиг влево для нахождения нужного количества итераций.
+            {
+                n--; 
+            }
+            DoubleMatrix tempMatrix = x;
             while (--n > 0)
-                tmp = (tmp * tmp) * (((powNum <<= 1) < 0) ? x : identityМatrix); 
-            return tmp;
+            {
+                tempMatrix = (tempMatrix * tempMatrix) * (((powNum <<= 1) < 0) ? x : identityМatrix); //Расчёт по формуле целочисленного возведения в степень.
+            }                
+            return tempMatrix;
         }
 
         //Расчёт числа Фибоначчи по порядковому номеру основан на матричном методе.
         //http://mech.math.msu.su/~shvetz/54/inf/perl-examples/PerlExamples_Fibonacci_Ideas.xhtml
         public static int Fibonacci(int n)
         {
-            return IntPower(fibonacciMatrix, (short)(n - 1))._11;
+            return IntPower(fibonacciMatrix, (short)(n - 1))._11; //Возврат элемента первой строки первого столбца, содержащего результат.
         }
 
         public static int StartNumber(int innerBorder)
